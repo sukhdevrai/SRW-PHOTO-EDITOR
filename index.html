@@ -1,351 +1,3 @@
-<header class="srw-header">
-
-      <div class="srw-logo">
-              <span>SRW</span>
-                      <small>PHOTO EDITOR</small>
-                          </div>
-
-                              <h1>SRW PHOTO EDITOR</h1>
-
-                                  <p>Created By Sukhdev Rai Warwal</p>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SRW PHOTO EDITOR</title>
-
-<style>
-*{box-sizing:border-box}
-body{
- margin:0;background:#101014;color:white;
-  font-family:Arial,sans-serif;text-align:center;
-  }
-  header{
-   background:#181818;padding:22px 10px;
-    border-bottom:2px solid #d9aa27;
-    }
-    .logo{
-     width:112px;height:112px;margin:auto;
-      border:3px solid #e8bd39;border-radius:24px;
-       background:linear-gradient(145deg,#333,#050505);
-        display:flex;flex-direction:column;
-         justify-content:center;align-items:center;
-          box-shadow:0 0 16px #b88c20;
-          }
-          .logo strong{font-size:38px;color:#ffcf40;letter-spacing:3px}
-          .logo small{font-size:10px;color:white;font-weight:bold}
-          header h1{font-size:23px;color:#ffcc33}
-          header p{font-size:13px;color:#ddd}
-          main{max-width:700px;margin:auto;padding:12px}
-          .panel{
-           background:#202027;border:1px solid #393943;
-            border-radius:13px;padding:15px;margin:13px 0;
-            }
-            h2{font-size:18px;color:#ffcc33;margin-top:5px}
-            button{
-             background:#ffcc33;color:#111;border:0;
-              border-radius:8px;padding:11px 14px;
-               margin:5px;font-weight:bold;
-               }
-               input,select{
-                max-width:100%;padding:10px;
-                 border-radius:7px;border:1px solid #888;
-                  margin:6px;background:#fff;color:#111;
-                  }
-                  label{display:block;margin-top:12px;font-size:14px}
-                  input[type=range]{width:90%}
-                  canvas{
-                   display:block;width:100%;height:auto;
-                    background:#333;border:2px solid #777;
-                     border-radius:6px;
-                     }
-                     .row{display:flex;justify-content:center;flex-wrap:wrap}
-                     .note{font-size:12px;color:#bbb}
-                     footer{padding:20px;color:#aaa}
-                     </style>
-                     </head>
-                     
-                     <body>
-                     
-                     <header>
-                      <div class="logo">
-                        <strong>SRW</strong>
-                          <small>PHOTO EDITOR</small>
-                           </div>
-                            <h1>SRW PHOTO EDITOR</h1>
-                             <p>Created By Sukhdev Rai Warwal</p>
-                             </header>
-                             
-                             <main>
-                             
-                             <div class="panel">
-                              <h2>UPLOAD PHOTO</h2>
-                               <input type="file" id="upload" accept="image/*">
-                               </div>
-                               
-                               <div class="panel">
-                                <h2>PHOTO PREVIEW</h2>
-                                 <canvas id="canvas" width="600" height="400"></canvas>
-                                  <p class="note">अपनी फोटो यहाँ Preview में देखो।</p>
-                                  </div>
-                                  
-                                  <div class="panel">
-                                   <h2>PHOTO CROP</h2>
-                                    <label>Crop X</label>
-                                     <input type="number" id="cropX" value="0" min="0">
-                                      <label>Crop Y</label>
-                                       <input type="number" id="cropY" value="0" min="0">
-                                        <label>Width</label>
-                                         <input type="number" id="cropW" value="300" min="1">
-                                          <label>Height</label>
-                                           <input type="number" id="cropH" value="300" min="1">
-                                            <button onclick="cropPhoto()">CROP PHOTO</button>
-                                            </div>
-                                            
-                                            <div class="panel">
-                                             <h2>BACKGROUND COLOR REMOVER</h2>
-                                              <p class="note">जिस रंग को हटाना है, उसे चुनें। समान रंग के हिस्से पारदर्शी होंगे।</p>
-                                               <label>Background Color</label>
-                                                <input type="color" id="bgColor" value="#ffffff">
-                                                 <label>Color Tolerance</label>
-                                                  <input type="range" id="tolerance" min="0" max="150" value="35">
-                                                   <button onclick="removeBackground()">REMOVE COLOR</button>
-                                                    <button onclick="restorePhoto()">RESTORE ORIGINAL</button>
-                                                    </div>
-                                                    
-                                                    <div class="panel">
-                                                     <h2>ADD TEXT ON PHOTO</h2>
-                                                      <input type="text" id="photoText" placeholder="Write your text">
-                                                       <label>Font Style</label>
-                                                        <select id="font">
-                                                          <option value="Arial">Arial</option>
-                                                            <option value="Georgia">Georgia</option>
-                                                              <option value="Impact">Impact</option>
-                                                                <option value="Verdana">Verdana</option>
-                                                                  <option value="Times New Roman">Times New Roman</option>
-                                                                    <option value="Courier New">Courier New</option>
-                                                                     </select>
-                                                                      <label>Text Size</label>
-                                                                       <input type="range" id="fontSize" min="12" max="100" value="35">
-                                                                        <label>Text Color</label>
-                                                                         <input type="color" id="textColor" value="#ffffff">
-                                                                          <label>Text Position</label>
-                                                                           <select id="textPosition">
-                                                                             <option value="top">Top</option>
-                                                                               <option value="center">Center</option>
-                                                                                 <option value="bottom">Bottom</option>
-                                                                                   <option value="left">Left</option>
-                                                                                     <option value="right">Right</option>
-                                                                                      </select>
-                                                                                       <button onclick="addText()">ADD TEXT</button>
-                                                                                       </div>
-                                                                                       
-                                                                                       <div class="panel">
-                                                                                        <h2>PHOTO FILTERS</h2>
-                                                                                         <div class="row">
-                                                                                           <button onclick="setFilter('brightness(130%)')">Brightness</button>
-                                                                                             <button onclick="setFilter('contrast(130%)')">Contrast</button>
-                                                                                               <button onclick="setFilter('saturate(160%)')">Saturation</button>
-                                                                                                 <button onclick="setFilter('grayscale(100%)')">Black & White</button>
-                                                                                                   <button onclick="setFilter('sepia(100%)')">Sepia</button>
-                                                                                                     <button onclick="setFilter('blur(2px)')">Blur</button>
-                                                                                                      </div>
-                                                                                                       <button onclick="setFilter('none')">Clear Filter</button>
-                                                                                                       </div>
-                                                                                                       
-                                                                                                       <div class="panel">
-                                                                                                        <h2>SAVE YOUR PHOTO</h2>
-                                                                                                         <button onclick="savePhoto()">SAVE PHOTO JPG</button>
-                                                                                                          <button onclick="resetPhoto()">RESET PHOTO</button>
-                                                                                                          </div>
-                                                                                                          
-                                                                                                          </main>
-                                                                                                          
-                                                                                                          <footer>SRW PHOTO EDITOR © 2026</footer>
-                                                                                                          
-                                                                                                          <script>
-                                                                                                          const canvas=document.getElementById("canvas");
-                                                                                                          const ctx=canvas.getContext("2d",{willReadFrequently:true});
-                                                                                                          let original=null;
-                                                                                                          let currentImage=null;
-                                                                                                          let filter="none";
-                                                                                                          
-                                                                                                          function draw(){
-                                                                                                           if(!currentImage)return;
-                                                                                                            canvas.width=currentImage.width;
-                                                                                                             canvas.height=currentImage.height;
-                                                                                                              ctx.clearRect(0,0,canvas.width,canvas.height);
-                                                                                                               ctx.filter=filter;
-                                                                                                                ctx.drawImage(currentImage,0,0);
-                                                                                                                 ctx.filter="none";
-                                                                                                                 }
-                                                                                                                 
-                                                                                                                 function makeImage(source){
-                                                                                                                  const img=new Image();
-                                                                                                                   img.onload=()=>{
-                                                                                                                     currentImage=img;
-                                                                                                                       original=img;
-                                                                                                                         filter="none";
-                                                                                                                           draw();
-                                                                                                                            };
-                                                                                                                             img.src=source;
-                                                                                                                             }
-                                                                                                                             
-                                                                                                                             document.getElementById("upload").addEventListener("change",e=>{
-                                                                                                                              const file=e.target.files[0];
-                                                                                                                               if(!file)return;
-                                                                                                                                const reader=new FileReader();
-                                                                                                                                 reader.onload=()=>makeImage(reader.result);
-                                                                                                                                  reader.readAsDataURL(file);
-                                                                                                                                  });
-                                                                                                                                  
-                                                                                                                                  function setFilter(value){
-                                                                                                                                   if(!currentImage){alert("Upload photo first");return;}
-                                                                                                                                    filter=value;
-                                                                                                                                     draw();
-                                                                                                                                     }
-                                                                                                                                     
-                                                                                                                                     function cropPhoto(){
-                                                                                                                                      if(!currentImage){alert("Upload photo first");return;}
-                                                                                                                                       const x=Math.max(0,Number(cropX.value));
-                                                                                                                                        const y=Math.max(0,Number(cropY.value));
-                                                                                                                                         const w=Number(cropW.value);
-                                                                                                                                          const h=Number(cropH.value);
-                                                                                                                                           if(w<1||h<1||x+w>canvas.width||y+h>canvas.height){
-                                                                                                                                             alert("Crop values photo ke andar rakho");
-                                                                                                                                               return;
-                                                                                                                                                }
-                                                                                                                                                 const temp=document.createElement("canvas");
-                                                                                                                                                  temp.width=w;temp.height=h;
-                                                                                                                                                   temp.getContext("2d").drawImage(canvas,x,y,w,h,0,0,w,h);
-                                                                                                                                                    makeImage(temp.toDataURL("image/png"));
-                                                                                                                                                    }
-                                                                                                                                                    
-                                                                                                                                                    function removeBackground(){
-                                                                                                                                                     if(!currentImage){alert("Upload photo first");return;}
-                                                                                                                                                      const color=document.getElementById("bgColor").value;
-                                                                                                                                                       const tolerance=Number(document.getElementById("tolerance").value);
-                                                                                                                                                        const r=parseInt(color.slice(1,3),16);
-                                                                                                                                                         const g=parseInt(color.slice(3,5),16);
-                                                                                                                                                          const b=parseInt(color.slice(5,7),16);
-                                                                                                                                                           const imageData=ctx.getImageData(0,0,canvas.width,canvas.height);
-                                                                                                                                                            const data=imageData.data;
-                                                                                                                                                             for(let i=0;i<data.length;i+=4){
-                                                                                                                                                               const dr=data[i]-r;
-                                                                                                                                                                 const dg=data[i+1]-g;
-                                                                                                                                                                   const db=data[i+2]-b;
-                                                                                                                                                                     const distance=Math.sqrt(dr*dr+dg*dg+db*db);
-                                                                                                                                                                       if(distance<tolerance*1.7)data[i+3]=0;
-                                                                                                                                                                        }
-                                                                                                                                                                         ctx.putImageData(imageData,0,0);
-                                                                                                                                                                          currentImage=new Image();
-                                                                                                                                                                           currentImage.src=canvas.toDataURL("image/png");
-                                                                                                                                                                           }
-                                                                                                                                                                           
-                                                                                                                                                                           function restorePhoto(){
-                                                                                                                                                                            if(!original){alert("Upload photo first");return;}
-                                                                                                                                                                             currentImage=original;
-                                                                                                                                                                              filter="none";
-                                                                                                                                                                               draw();
-                                                                                                                                                                               }
-                                                                                                                                                                               
-                                                                                                                                                                               function addText(){
-                                                                                                                                                                                if(!currentImage){alert("Upload photo first");return;}
-                                                                                                                                                                                 const text=document.getElementById("photoText").value;
-                                                                                                                                                                                  if(!text){alert("Write text first");return;}
-                                                                                                                                                                                   const size=Number(document.getElementById("fontSize").value);
-                                                                                                                                                                                    const font=document.getElementById("font").value;
-                                                                                                                                                                                     const color=document.getElementById("textColor").value;
-                                                                                                                                                                                      const position=document.getElementById("textPosition").value;
-                                                                                                                                                                                      
-                                                                                                                                                                                       ctx.font="bold "+size+"px '"+font+"'";
-                                                                                                                                                                                        ctx.fillStyle=color;
-                                                                                                                                                                                         ctx.textBaseline="middle";
-                                                                                                                                                                                          ctx.textAlign="center";
-                                                                                                                                                                                          
-                                                                                                                                                                                           let x=canvas.width/2;
-                                                                                                                                                                                            let y=canvas.height/2;
-                                                                                                                                                                                            
-                                                                                                                                                                                             if(position==="top")y=size;
-                                                                                                                                                                                              if(position==="bottom")y=canvas.height-size;
-                                                                                                                                                                                               if(position==="left"){x=canvas.width*.25;}
-                                                                                                                                                                                                if(position==="right"){x=canvas.width*.75;}
-                                                                                                                                                                                                
-                                                                                                                                                                                                 ctx.fillText(text,x,y,canvas.width*.9);
-                                                                                                                                                                                                  currentImage=new Image();
-                                                                                                                                                                                                   currentImage.src=canvas.toDataURL("image/png");
-                                                                                                                                                                                                   }
-                                                                                                                                                                                                   
-                                                                                                                                                                                                   function savePhoto(){
-                                                                                                                                                                                                    if(!canvas.width||!canvas.height){alert("Upload photo first");return;}
-                                                                                                                                                                                                     const link=document.createElement("a");
-                                                                                                                                                                                                      link.download="SRW-Photo.png";
-                                                                                                                                                                                                       link.href=canvas.toDataURL("image/png");
-                                                                                                                                                                                                        link.click();
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                        
-                                                                                                                                                                                                        function resetPhoto(){
-                                                                                                                                                                                                         if(!original){alert("Upload photo first");return;}
-                                                                                                                                                                                                          currentImage=original;
-                                                                                                                                                                                                           filter="none";
-                                                                                                                                                                                                            draw();
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                            </script>
-                                                                                                                                                                                                            
-                                                                                                                                                                                                            </body>
-                                                                                                                                                                                                            </html>
-                                                                                                                                                                                                                                            </header>
-
-                                  <style>
-                                  .srw-header {
-                                      text-align: center;
-                                          background: #111;
-                                              padding: 25px 10px;
-                                                  color: white;
-                                                  }
-
-                                                  .srw-logo {
-                                                      width: 115px;
-                                                          height: 115px;
-                                                              margin: auto;
-                                                                  border: 3px solid #ffcc00;
-                                                                      border-radius: 25px;
-                                                                          background: linear-gradient(145deg, #333, #050505);
-                                                                              display: flex;
-                                                                                  flex-direction: column;
-                                                                                      justify-content: center;
-                                                                                          align-items: center;
-                                                                                              box-shadow: 0 0 15px #ffcc00;
-                                                                                              }
-
-                                                                                              .srw-logo span {
-                                                                                                  color: #ffcc00;
-                                                                                                      font-size: 38px;
-                                                                                                          font-weight: bold;
-                                                                                                              letter-spacing: 3px;
-                                                                                                              }
-
-                                                                                                              .srw-logo small {
-                                                                                                                  color: white;
-                                                                                                                      font-size: 10px;
-                                                                                                                          font-weight: bold;
-                                                                                                                          }
-
-                                                                                                                          .srw-header h1 {
-                                                                                                                              color: #ffcc00;
-                                                                                                                                  font-size: 23px;
-                                                                                                                                      margin-top: 15px;
-                                                                                                                                      }
-
-                                                                                                                                      .srw-header p {
-                                                                                                                                          color: white;
-                                                                                                                                              font-size: 13px;
-                                                                                                                                              }
-
-</style>
 
 <!DOCTYPE html>
 <html lang="hi">
@@ -507,8 +159,181 @@ canvas{width:100%;height:auto;background:#292929;border:1px solid #777;border-ra
 <div class="panel">
 <button onclick="savePhoto()">SAVE PHOTO</button>
 </div>
+
+<div class="panel">
+<h2>NEW OPTIONS – SRW PHOTO EDITOR</h2>
+
+<button onclick="enhanceHD()">1. HD Enhance</button>
+<button onclick="offlineEffect()">2. Offline Effects</button>
+<button onclick="photoShadow()">3. Photo Shadow</button>
+<button onclick="neonGlow()">4. Neon Glow</button>
+<button onclick="doubleExposure()">5. Double Exposure</button>
+
+<hr>
+
+<label>Compression Quality
+<input id="compressQuality" type="range" min="20" max="100" value="80">
+</label>
+<button onclick="compressPhoto()">6. Photo Compressor</button>
+
+<label>Width <input id="customW" type="number" value="1000"></label>
+<label>Height <input id="customH" type="number" value="1000"></label>
+<button onclick="customCanvas()">7. Custom Canvas</button>
+
+<input id="layerText" placeholder="Multiple Text Layers">
+<button onclick="addTextLayer()">8. Add Text Layer</button>
+
+<label>Outline Color <input id="outlineColor" type="color" value="#ffffff"></label>
+<button onclick="textOutline()">9. Text Outline</button>
+
+<label>Brush Color <input id="brushColor" type="color" value="#ff0000"></label>
+<button onclick="toggleBrush()">10. Drawing Brush</button>
+</div>
+
 </main>
 
+function enhanceHD(){
+ snapshot();
+  const d=ctx.getImageData(0,0,canvas.width,canvas.height);
+   for(let i=0;i<d.data.length;i+=4){
+     for(let j=0;j<3;j++){
+        d.data[i+j]=Math.min(255,Math.max(0,(d.data[i+j]-128)*1.12+128));
+          }
+           }
+            ctx.putImageData(d,0,0);
+            }
+
+            function offlineEffect(){
+             snapshot();
+              const d=ctx.getImageData(0,0,canvas.width,canvas.height);
+               for(let i=0;i<d.data.length;i+=4){
+                 let avg=(d.data[i]+d.data[i+1]+d.data[i+2])/3;
+                   d.data[i]=avg;
+                     d.data[i+1]=avg;
+                       d.data[i+2]=avg;
+                        }
+                         ctx.putImageData(d,0,0);
+                         }
+
+                         function photoShadow(){
+                          snapshot();
+                           ctx.save();
+                            ctx.shadowColor="rgba(0,0,0,0.8)";
+                             ctx.shadowBlur=25;
+                              ctx.shadowOffsetX=12;
+                               ctx.shadowOffsetY=12;
+                                ctx.strokeStyle="rgba(0,0,0,0)";
+                                 ctx.strokeRect(10,10,canvas.width-20,canvas.height-20);
+                                  ctx.restore();
+                                  }
+
+                                  function neonGlow(){
+                                   snapshot();
+                                    ctx.save();
+                                     ctx.shadowColor="#00ffff";
+                                      ctx.shadowBlur=35;
+                                       ctx.strokeStyle="#00ffff";
+                                        ctx.lineWidth=12;
+                                         ctx.strokeRect(20,20,canvas.width-40,canvas.height-40);
+                                          ctx.restore();
+                                          }
+
+                                          function doubleExposure(){
+                                           snapshot();
+                                            const temp=document.createElement("canvas");
+                                             temp.width=canvas.width;
+                                              temp.height=canvas.height;
+                                               temp.getContext("2d").drawImage(canvas,0,0);
+                                                ctx.globalAlpha=0.35;
+                                                 ctx.drawImage(temp,30,30);
+                                                  ctx.globalAlpha=1;
+                                                  }
+
+                                                  function compressPhoto(){
+                                                   const q=Number(document.getElementById("compressQuality").value)/100;
+                                                    const a=document.createElement("a");
+                                                     a.download="SRW-Compressed.jpg";
+                                                      a.href=canvas.toDataURL("image/jpeg",q);
+                                                       a.click();
+                                                       }
+
+                                                       function customCanvas(){
+                                                        const w=Number(document.getElementById("customW").value);
+                                                         const h=Number(document.getElementById("customH").value);
+                                                          if(w<1||h<1||w>5000||h>5000){
+                                                            alert("Width aur Height 1 se 5000 ke beech rakhein");
+                                                              return;
+                                                               }
+                                                                snapshot();
+                                                                 const temp=document.createElement("canvas");
+                                                                  temp.width=canvas.width;
+                                                                   temp.height=canvas.height;
+                                                                    temp.getContext("2d").drawImage(canvas,0,0);
+                                                                     canvas.width=w;
+                                                                      canvas.height=h;
+                                                                       ctx.drawImage(temp,0,0,w,h);
+                                                                       }
+
+                                                                       function addTextLayer(){
+                                                                        const t=document.getElementById("layerText").value;
+                                                                         if(!t)return;
+                                                                          snapshot();
+                                                                           ctx.font="bold 50px Arial";
+                                                                            ctx.fillStyle="#ffffff";
+                                                                             ctx.textAlign="center";
+                                                                              ctx.fillText(t,canvas.width/2,canvas.height/2);
+                                                                              }
+
+                                                                              function textOutline(){
+                                                                               const t=document.getElementById("layerText").value;
+                                                                                if(!t)return;
+                                                                                 snapshot();
+                                                                                  ctx.font="bold 60px Arial";
+                                                                                   ctx.textAlign="center";
+                                                                                    ctx.lineWidth=5;
+                                                                                     ctx.strokeStyle=document.getElementById("outlineColor").value;
+                                                                                      ctx.strokeText(t,canvas.width/2,canvas.height/2);
+                                                                                      }
+
+                                                                                      let brushEnabled=false;
+                                                                                      let brushDown=false;
+
+                                                                                      function toggleBrush(){
+                                                                                       brushEnabled=!brushEnabled;
+                                                                                        canvas.style.cursor=brushEnabled?"crosshair":"default";
+                                                                                        }
+
+                                                                                        canvas.addEventListener("pointerdown",e=>{
+                                                                                         if(!brushEnabled)return;
+                                                                                          brushDown=true;
+                                                                                           const r=canvas.getBoundingClientRect();
+                                                                                            const x=(e.clientX-r.left)*canvas.width/r.width;
+                                                                                             const y=(e.clientY-r.top)*canvas.height/r.height;
+                                                                                              ctx.beginPath();
+                                                                                               ctx.moveTo(x,y);
+                                                                                                ctx.strokeStyle=document.getElementById("brushColor").value;
+                                                                                                 ctx.lineWidth=8;
+                                                                                                  ctx.lineCap="round";
+                                                                                                  });
+
+                                                                                                  canvas.addEventListener("pointermove",e=>{
+                                                                                                   if(!brushEnabled||!brushDown)return;
+                                                                                                    const r=canvas.getBoundingClientRect();
+                                                                                                     const x=(e.clientX-r.left)*canvas.width/r.width;
+                                                                                                      const y=(e.clientY-r.top)*canvas.height/r.height;
+                                                                                                       ctx.lineTo(x,y);
+                                                                                                        ctx.stroke();
+                                                                                                        });
+
+                                                                                                        canvas.addEventListener("pointerup",()=>{
+                                                                                                         if(brushDown)snapshot();
+                                                                                                          brushDown=false;
+                                                                                                          });
+                                                                                                          canvas.addEventListener("pointerleave",()=>{
+                                                                                                           if(brushDown)snapshot();
+                                                                                                            brushDown=false;
+                                                                                                            });
+                                                                                                            
 <script>
 const canvas=document.getElementById("canvas");
 const ctx=canvas.getContext("2d");
