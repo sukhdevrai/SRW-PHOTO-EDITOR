@@ -154,4 +154,5 @@ function applyFilter(filter) {
                                                             };
                                                             
                                                                 image.src = canvas.toDataURL();
-                                                                }                                   }
+             
+                                                              }                                   }
