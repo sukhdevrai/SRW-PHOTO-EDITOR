@@ -110,3 +110,28 @@ const scenicImage = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
 previewImage.src = scenicImage;
 previewImage.classList.remove('hidden');
 fallbackMessage.classList.add('hidden');
+// SRW PHOTO EDITOR FILTERS
+
+function applyFilter(filter) {
+  const canvas = document.getElementById("canvas");
+    if (!canvas) return;
+
+      const ctx = canvas.getContext("2d");
+
+        ctx.filter = filter;
+          const image = new Image();
+            image.src = canvas.toDataURL();
+
+              image.onload = function () {
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
+                      ctx.filter = filter;
+                          ctx.drawImage(image, 0, 0);
+                              ctx.filter = "none";
+                                };
+                                }
+
+                                function resetFilter() {
+                                  const canvas = document.getElementById("canvas");
+                                    if (!canvas) return;
+                                      location.reload();
+                                      }
