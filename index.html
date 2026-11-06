@@ -23,6 +23,19 @@
           <label class="upload-btn">
             <input id="imageUpload" type="file" accept="image/*" />
             Upload image
+            <h2>PHOTO FILTERS</h2>
+
+            <button onclick="applyFilter('brightness(130%)')">Brightness</button>
+
+            <button onclick="applyFilter('contrast(130%)')">Contrast</button>
+
+            <button onclick="applyFilter('saturate(150%)')">Saturation</button>
+
+            <button onclick="applyFilter('grayscale(100%)')">Black & White</button>
+
+            <button onclick="applyFilter('sepia(100%)')">Sepia</button>
+
+            <button onclick="applyFilter('blur(2px)')">Blur</button>
           </label>
           <button id="resetBtn" class="ghost-btn" type="button">Reset</button>
         </div>
