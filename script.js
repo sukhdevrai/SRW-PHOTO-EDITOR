@@ -134,4 +134,24 @@ function applyFilter(filter) {
                                   const canvas = document.getElementById("canvas");
                                     if (!canvas) return;
                                       location.reload();
-                                      }
+        
+ let currentFilter = "none";
+
+function applyFilter(filter) {
+    currentFilter = filter;
+    
+        const canvas = document.getElementById("canvas");
+            if (!canvas) return;
+            
+                const ctx = canvas.getContext("2d");
+                    const image = new Image();
+                    
+                        image.onload = function () {
+                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                        ctx.filter = currentFilter;
+                                                ctx.drawImage(image, 0, 0);
+                                                        ctx.filter = "none";
+                                                            };
+                                                            
+                                                                image.src = canvas.toDataURL();
+                                                                }                                   }
