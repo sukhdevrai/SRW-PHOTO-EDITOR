@@ -1,126 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SRW Photo Editor</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="app-shell">
-      <header class="topbar">
-        <div class="brand-wrap">
-          <div class="brand-mark">S</div>
-          <div>
-            <p class="eyebrow">Creative studio</p>
-            <h1>SRW Photo Editor</h1>
-          </div>
-        </div>
-        <div class="toolbar-actions">
-          <label class="upload-btn">
-            <input id="imageUpload" type="file" accept="image/*" />
-            Upload image
-            <h2>PHOTO FILTERS</h2>
+<header class="srw-header">
 
-            <button onclick="applyFilter('brightness(130%)')">Brightness</button>
+      <div class="srw-logo">
+              <span>SRW</span>
+                      <small>PHOTO EDITOR</small>
+                          </div>
 
-            <button onclick="applyFilter('contrast(130%)')">Contrast</button>
+                              <h1>SRW PHOTO EDITOR</h1>
 
-            <button onclick="applyFilter('saturate(150%)')">Saturation</button>
+                                  <p>Created By Sukhdev Rai Warwal</p>
 
-            <button onclick="applyFilter('grayscale(100%)')">Black & White</button>
+                                  </header>
 
-            <button onclick="applyFilter('sepia(100%)')">Sepia</button>
+                                  <style>
+                                  .srw-header {
+                                      text-align: center;
+                                          background: #111;
+                                              padding: 25px 10px;
+                                                  color: white;
+                                                  }
 
-            <button onclick="applyFilter('blur(2px)')">Blur</button>
-          </label>
-          <button id="resetBtn" class="ghost-btn" type="button">Reset</button>
-        </div>
-      </header>
+                                                  .srw-logo {
+                                                      width: 115px;
+                                                          height: 115px;
+                                                              margin: auto;
+                                                                  border: 3px solid #ffcc00;
+                                                                      border-radius: 25px;
+                                                                          background: linear-gradient(145deg, #333, #050505);
+                                                                              display: flex;
+                                                                                  flex-direction: column;
+                                                                                      justify-content: center;
+                                                                                          align-items: center;
+                                                                                              box-shadow: 0 0 15px #ffcc00;
+                                                                                              }
 
-      <main class="workspace">
-        <aside class="controls-panel">
-          <div class="panel-header">
-            <span class="panel-dot"></span>
-            <h2>Adjustments</h2>
-          </div>
+                                                                                              .srw-logo span {
+                                                                                                  color: #ffcc00;
+                                                                                                      font-size: 38px;
+                                                                                                          font-weight: bold;
+                                                                                                              letter-spacing: 3px;
+                                                                                                              }
 
-          <div class="control-group">
-            <label for="brightness">Brightness</label>
-            <div class="control-row">
-              <input id="brightness" type="range" min="0" max="200" value="100" />
-              <output id="brightnessValue">100%</output>
-            </div>
-          </div>
+                                                                                                              .srw-logo small {
+                                                                                                                  color: white;
+                                                                                                                      font-size: 10px;
+                                                                                                                          font-weight: bold;
+                                                                                                                          }
 
-          <div class="control-group">
-            <label for="contrast">Contrast</label>
-            <div class="control-row">
-              <input id="contrast" type="range" min="0" max="200" value="100" />
-              <output id="contrastValue">100%</output>
-            </div>
-          </div>
+                                                                                                                          .srw-header h1 {
+                                                                                                                              color: #ffcc00;
+                                                                                                                                  font-size: 23px;
+                                                                                                                                      margin-top: 15px;
+                                                                                                                                      }
 
-          <div class="control-group">
-            <label for="saturation">Saturation</label>
-            <div class="control-row">
-              <input id="saturation" type="range" min="0" max="200" value="100" />
-              <output id="saturationValue">100%</output>
-            </div>
-          </div>
-
-          <div class="control-group">
-            <label for="blur">Blur</label>
-            <div class="control-row">
-              <input id="blur" type="range" min="0" max="10" value="0" step="0.1" />
-              <output id="blurValue">0px</output>
-            </div>
-          </div>
-
-          <div class="control-group">
-            <label for="sepia">Sepia</label>
-            <div class="control-row">
-              <input id="sepia" type="range" min="0" max="100" value="0" />
-              <output id="sepiaValue">0%</output>
-            </div>
-          </div>
-
-          <div class="control-group">
-            <label for="grayscale">Grayscale</label>
-            <div class="control-row">
-              <input id="grayscale" type="range" min="0" max="100" value="0" />
-              <output id="grayscaleValue">0%</output>
-            </div>
-          </div>
-        </aside>
-
-        <section class="preview-panel">
-          <div class="preview-header">
-            <div>
-              <p class="eyebrow">Preview</p>
-              <h2>Selected image</h2>
-            </div>
-            <span class="badge">Live</span>
-          </div>
-
-          <div class="image-stage">
-            <img id="previewImage" alt="Editable preview" src="" />
-    <button onclick="savePhoto()">Save Photo</button>
-            function savePhoto() {
-                  const canvas = document.getElementById("canvas");
-
-                      if (!canvas) {
-                              alert("Please upload a photo first!");
-                                      return;
-                                          }
-
-                                              const link = document.createElement("a");
-                                                  link.download = "SRW-Photo.jpg";
-                                                      link.href = canvas.toDataURL("image/jpeg");
-                                                          link.click();
-                                                          }
-                                                          
-            }
+                                                                                                                                      .srw-header p {
+                                                                                                                                          color: white;
+                                                                                                                                              font-size: 13px;
+                                                                                                                                              }
+                                                                                                                                              </style>
