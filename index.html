@@ -108,15 +108,19 @@
 
           <div class="image-stage">
             <img id="previewImage" alt="Editable preview" src="" />
-            <div class="fallback" id="fallbackMessage">
-              <div class="fallback-icon">✦</div>
-              <p>Upload an image to begin editing</p>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
+    <button onclick="savePhoto()">Save Photo</button>
+            function savePhoto() {
+                  const canvas = document.getElementById("canvas");
 
-    <script src="script.js"></script>
-  </body>
-</html>
+                      if (!canvas) {
+                              alert("Please upload a photo first!");
+                                      return;
+                                          }
+
+                                              const link = document.createElement("a");
+                                                  link.download = "SRW-Photo.jpg";
+                                                      link.href = canvas.toDataURL("image/jpeg");
+                                                          link.click();
+                                                          }
+                                                          
+            }
