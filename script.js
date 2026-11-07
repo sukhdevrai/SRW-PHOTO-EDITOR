@@ -155,4 +155,22 @@ function applyFilter(filter) {
                                                             
                                                                 image.src = canvas.toDataURL();
              
-                                                              }                                   }
+                                                              function deleteRecording() {
+                                                                  if (confirm("Delete this recording?")) {
+                                                                      if (window.recordedAudioURL) {
+                                                                            URL.revokeObjectURL(window.recordedAudioURL);
+                                                                                  window.recordedAudioURL = null;
+                                                                                      }
+
+                                                                                          const audio = document.getElementById("audioPlayback");
+                                                                                              if (audio) {
+                                                                                                    audio.pause();
+                                                                                                          audio.removeAttribute("src");
+                                                                                                                audio.load();
+                                                                                                                    }
+
+                                                                                                                        window.recordedChunks = [];
+                                                                                                                            alert("Recording deleted");
+                                                                                                                              }
+                                                                                                                              }
+                                                              }}                                   }
