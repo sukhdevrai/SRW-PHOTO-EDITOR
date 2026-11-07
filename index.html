@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SRW PHOTO & VIDEO EDITOR</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#10101b;color:white;font-family:Arial;padding-bottom:85px}
+header{text-align:center;background:#211b36;color:#ffd34e;padding:17px;font-size:21px;font-weight:bold}
+.marquee{background:#39234e;padding:12px;overflow:hidden;white-space:nowrap;font-weight:bold}
+.marquee span{display:inline-block;padding-left:100%;animation:move 12s linear infinite}
+@keyframes move{to{transform:translateX(-100%)}}
+h3{color:#ffd34e}
+.section{display:none;padding:12px}
+.section.active{display:block}
+.panel{background:#202032;padding:13px;margin-bottom:12px;border-radius:12px}
+button,input,select{padding:10px;margin:4px;border:0;border-radius:7px;max-width:100%}
+button{background:#ffd34e;color:#171717;font-weight:bold}
+input[type=file]{width:100%;background:white;color:black}
+.tools{display:flex;flex-wrap:wrap;gap:5px}
+.tools button{flex:1 1 90px}
+canvas,video{width:100%;max-height:420px;object-fit:contain;background:#fff;border-radius:8px}
+.menu{position:fixed;bottom:0;left:0;width:100%;display:flex;overflow-x:auto;background:#19172b;padding:9px;gap:7px;z-index:9}
+.menu button{flex-shrink:0;min-width:95px}
+small{color:#ccc}
+</style>
+</head>
+<body>
+
+<header>SRW PHOTO & VIDEO EDITOR</header>
+<div class="marquee"><span>★ SRW — SUKHDEV RAI WARWAL ★ SRW — SUKHDEV RAI WARWAL ★</span></div>
+
+<!-- PHOTO EDITOR -->
+<div id="photo" class="section active">
+<h3>📸 PHOTO EDITOR</h3>
+<div class="panel">
+<input type="file" id="photoFile" accept="image/*">
+<canvas id="canvas" width="1000" height="1000"></canvas>
+<div class="tools">
+<button onclick="savePhoto()">💾 Save</button>
+<button onclick="undo()">↶ Undo</button>
+<button onclick="redo()">↷ Redo</button>
+<button onclick="resetPhoto()">Reset</button>
+</div>
+</div>
+
+<div class="panel">
+<h3>📐 Canvas Size</h3>
+<select id="ratio">
+<option value="1:1">1:1</option>
+<option value="16:9">16:9</option>
+<option value="9:16">9:16</option>
+<option value="4:5">4:5</option>
+<option value="4:3">4:3</option>
+<option value="3:4">3:4</option>
+<option value="2:1">2:1</option>
+<option value="1:2">1:2</option>
+</select>
+<button onclick="resizeCanvas()">Apply Size</button>
+</div>
+
+<div class="panel">
+<h3>🎨 Filters</h3>
+<div class="tools">
+<button onclick="filterPhoto('none')">Normal</button>
+<button onclick="filterPhoto('grayscale(1)')">B&W</button>
+<button onclick="filterPhoto('sepia(1)')">Sepia</button>
+<button onclick="filterPhoto('contrast(1.5)')">Contrast</button>
+<button onclick="filterPhoto('brightness(1.3)')">Bright</button>
+<button onclick="filterPhoto('saturate(2)')">Color</button>
+<button onclick="filterPhoto('blur(2px)')">Blur</button>
+<button onclick="filterPhoto('invert(1)')">Invert</button>
+</div>
+</div>
+
+<div class="panel">
+<h3>🌄 Background Change</h3>
+<input type="color" id="bgColor" value="#ffffff">
+<button onclick="addColorBackground()">Apply Color</button>
+<input type="file" id="bgFile" accept="image/*">
+<button onclick="addPhotoBackground()">Upload Background</button>
+</div>
+
+<div class="panel">
+<h3>✂️ Crop & Rotate</h3>
+<input type="number" id="cropX" placeholder="X" value="0">
+<input type="number" id="cropY" placeholder="Y" value="0">
+<input type="number" id="cropW" placeholder="Width" value="500">
+<input type="number" id="cropH" placeholder="Height" value="500">
+<button onclick="cropPhoto()">Crop</button>
+<div class="tools">
+<button onclick="rotatePhoto(90)">Rotate Right</button>
+<button onclick="rotatePhoto(-90)">Rotate Left</button>
+</div>
+</div>
+
+<div class="panel">
+<h3>🔤 Text & Fonts</h3>
+<input id="txt" placeholder="अपना Text लिखें">
+<select id="font">
+<option>Arial</option>
+<option>serif</option>
+<option>sans-serif</option>
+<option>cursive</option>
+<option>monospace</option>
+</select>
+<input type="number" id="fontSize" value="50" placeholder="Font Size">
+<input type="color" id="fontColor" value="#ff0000">
+<button onclick="addText()">Add Text</button>
+</div>
+
+<div class="panel">
+<h3>🖼️ Stickers / PIP</h3>
+<input type="file" id="stickerFile" accept="image/*">
+<button onclick="addSticker()">Add Sticker / PIP</button>
+</div>
+
+<div class="panel">
+<h3>🖼️ Frames</h3>
+<div class="tools">
+<button onclick="addFrame('#ffffff')">White</button>
+<button onclick="addFrame('#000000')">Black</button>
+<button onclick="addFrame('#ffd700')">Gold</button>
+<button onclick="addFrame('#ff0000')">Red</button>
+</div>
+</div>
+
+<div class="panel">
+<h3>🪄 Color Remover</h3>
+<input type="color" id="removeColor" value="#00ff00">
+<button onclick="removeColorNow()">Remove Selected Color</button>
+</div>
+
+<div class="panel">
+<h3>🧽 Offline Magic Eraser</h3>
+<small>ब्रश से जिस हिस्से पर खींचेंगे वह मिटेगा।</small>
+<input type="range" id="brush" min="5" max="100" value="25">
+<button onclick="eraser=true">Enable Eraser</button>
+<button onclick="eraser=false">Disable Eraser</button>
+</div>
+</div>
+
+<!-- VIDEO EDITOR -->
+<div id="video" class="section">
+<h3>🎬 VIDEO EDITOR</h3>
+<div class="panel">
+<input type="file" id="videoFile" accept="video/*">
+<video id="player" controls playsinline></video>
+<div class="tools">
+<button onclick="player.play()">▶ Play</button>
+<button onclick="player.pause()">⏸ Pause</button>
+<button onclick="player.muted=!player.muted">Mute / Unmute</button>
+</div>
+</div>
+
+<div class="panel">
+<h3>Video Settings</h3>
+<label>Volume</label>
+<input type="range" id="volume" min="0" max="1" step=".1" value="1">
+<label>Speed</label>
+<select id="speed">
+<option value=".5">0.5x</option>
+<option value="1" selected>1x</option>
+<option value="1.5">1.5x</option>
+<option value="2">2x</option>
+</select>
+<button onclick="applyVideoSettings()">Apply</button>
+</div>
+
+<div class="panel">
+<h3>🎵 Audio Upload</h3>
+<input type="file" id="audioFile" accept="audio/*">
+<audio id="audioPlayer" controls></audio>
+</div>
+
+<div class="panel">
+<h3>🎙️ Voice Recording</h3>
+<button onclick="startRecording()">Start Recording</button>
+<button onclick="stopRecording()">Stop Recording</button>
+<button onclick="deleteRecording()">🗑️ Delete Recording</button>
+<audio id="voicePlayback" controls></audio>
+</div>
+
+<div class="panel">
+<h3>📐 Video Canvas Ratio</h3>
+<select id="videoRatio">
+<option>1:1</option><option>16:9</option>
+<option>9:16</option><option>4:5</option>
+<option>4:3</option><option>3:4</option>
+<option>2:1</option><option>1:2</option>
+</select>
+</div>
+
+<div class="panel">
+<h3>📸 Capture Poster</h3>
+<button onclick="capturePoster()">Save Video Poster</button>
+</div>
+
+<div class="panel">
+<small>अभी वीडियो प्ले, पॉज़, म्यूट, वॉल्यूम, स्पीड, ऑडियो और पोस्टर कैप्चर उपलब्ध हैं। पूरी वीडियो कटिंग, स्प्लिट और एक्सपोर्ट के लिए अगला वीडियो प्रोसेसिंग सिस्टम जोड़ना होगा।</small>
+</div>
+</div>
+
+<!-- FOLDERS -->
+<div id="folders" class="section">
+<h3>📁 ALL FOLDERS</h3>
+<div class="panel">
+<div class="tools">
+<button onclick="go('photo')">📸 Photo Editor</button>
+<button onclick="go('video')">🎬 Video Editor</button>
+<button onclick="goPhoto('ratio')">📐 Canvas Size</button>
+<button onclick="goPhoto('txt')">🔤 Text & Fonts</button>
+<button onclick="goPhoto('bgColor')">🌄 Background</button>
+<button onclick="goPhoto('stickerFile')">🖼️ Stickers</button>
+<button onclick="goPhoto('removeColor')">🎨 Color Remover</button>
+<button onclick="goPhoto('brush')">🧽 Magic Eraser</button>
+<button onclick="goPhoto('font')">🖼️ Frames</button>
+<button onclick="go('video')">🎵 Audio & Voice</button>
+</div>
+</div>
+</div>
+
+<!-- BOTTOM MENU BAR -->
+<div class="menu">
+<button onclick="go('photo')">📸 Photo</button>
+<button onclick="go('video')">🎬 Video</button>
+<button onclick="go('folders')">📁 Folders</button>
+<button onclick="go('photo');document.getElementById('photoFile').click()">Upload Photo</button>
+<button onclick="savePhoto()">💾 Save</button>
+</div>
+
+<script>
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+let original=null,history=[],future=[],eraser=false,drawing=false;
+let recorder=null,chunks=[];
+
+function go(id){
+ document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+   window.scrollTo(0,0);
+   }
+   function goPhoto(id){
+    go("photo");
+     document.getElementById(id).scrollIntoView({behavior:"smooth",block:"center"});
+     }
+     function remember(){
+      history.push(canvas.toDataURL());
+       if(history.length>15)history.shift();
+        future=[];
+        }
+        function restore(data){
+         let img=new Image();
+          img.onload=()=>{
+            canvas.width=img.width;
+              canvas.height=img.height;
+                ctx.drawImage(img,0,0);
+                 };
+                  img.src=data;
+                  }
+                  function undo(){
+                   if(history.length<2)return;
+                    future.push(history.pop());
+                     restore(history[history.length-1]);
+                     }
+                     function redo(){
+                      if(!future.length)return;
+                       let d=future.pop();history.push(d);restore(d);
+                       }
+                       document.getElementById("photoFile").onchange=e=>{
+                        let f=e.target.files[0];if(!f)return;
+                         let img=new Image();
+                          img.onload=()=>{
+                            canvas.width=img.width;canvas.height=img.height;
+                              ctx.drawImage(img,0,0);
+                                original=canvas.toDataURL();
+                                  history=[];remember();
+                                   };
+                                    img.src=URL.createObjectURL(f);
+                                    };
+                                    function savePhoto(){
+                                     let a=document.createElement("a");
+                                      a.download="SRW-Photo.png";
+                                       a.href=canvas.toDataURL("image/png");a.click();
+                                       }
+                                       function resetPhoto(){
+                                        if(original){restore(original);remember();}
+                                        }
+                                        function resizeCanvas(){
+                                         let [w,h]=ratio.value.split(":").map(Number);
+                                          let old=document.createElement("canvas");
+                                           old.width=canvas.width;old.height=canvas.height;
+                                            old.getContext("2d").drawImage(canvas,0,0);
+                                             canvas.width=1000;canvas.height=Math.round(1000*h/w);
+                                              ctx.fillStyle="white";ctx.fillRect(0,0,canvas.width,canvas.height);
+                                               let s=Math.min(canvas.width/old.width,canvas.height/old.height);
+                                                let iw=old.width*s,ih=old.height*s;
+                                                 ctx.drawImage(old,(canvas.width-iw)/2,(canvas.height-ih)/2,iw,ih);
+                                                  remember();
+                                                  }
+                                                  function filterPhoto(f){
+                                                   remember();
+                                                    let img=new Image();
+                                                     img.onload=()=>{
+                                                       ctx.clearRect(0,0,canvas.width,canvas.height);
+                                                         ctx.filter=f;
+                                                           ctx.drawImage(img,0,0,canvas.width,canvas.height);
+                                                             ctx.filter="none";
+                                                              };
+                                                               img.src=canvas.toDataURL();
+                                                               }
+                                                               function addColorBackground(){
+                                                                remember();
+                                                                 ctx.globalCompositeOperation="destination-over";
+                                                                  ctx.fillStyle=bgColor.value;
+                                                                   ctx.fillRect(0,0,canvas.width,canvas.height);
+                                                                    ctx.globalCompositeOperation="source-over";
+                                                                    }
+                                                                    function addPhotoBackground(){
+                                                                     let f=bgFile.files[0];if(!f)return;
+                                                                      let img=new Image();
+                                                                       img.onload=()=>{
+                                                                         remember();
+                                                                           let temp=document.createElement("canvas");
+                                                                             temp.width=canvas.width;temp.height=canvas.height;
+                                                                               temp.getContext("2d").drawImage(img,0,0,temp.width,temp.height);
+                                                                                 ctx.globalCompositeOperation="destination-over";
+                                                                                   ctx.drawImage(temp,0,0);
+                                                                                     ctx.globalCompositeOperation="source-over";
+                                                                                      };
+                                                                                       img.src=URL.createObjectURL(f);
+                                                                                       }
+                                                                                       function rotatePhoto(deg){
+                                                                                        remember();
+                                                                                         let old=document.createElement("canvas");
+                                                                                          old.width=canvas.width;old.height=canvas.height;
+                                                                                           old.getContext("2d").drawImage(canvas,0,0);
+                                                                                            canvas.width=old.height;canvas.height=old.width;
+                                                                                             ctx.save();
+                                                                                              ctx.translate(canvas.width/2,canvas.height/2);
+                                                                                               ctx.rotate(deg*Math.PI/180);
+                                                                                                ctx.drawImage(old,-old.width/2,-old.height/2);
+                                                                                                 ctx.restore();
+                                                                                                 }
+                                                                                                 function cropPhoto(){
+                                                                                                  let x=+cropX.value,y=+cropY.value,w=+cropW.value,h=+cropH.value;
+                                                                                                   if(w<1||h<1||x<0||y<0||x+w>canvas.width||y+h>canvas.height){
+                                                                                                     alert("Crop values check karein");return;
+                                                                                                      }
+                                                                                                       remember();
+                                                                                                        let d=ctx.getImageData(x,y,w,h);
+                                                                                                         canvas.width=w;canvas.height=h;
+                                                                                                          ctx.putImageData(d,0,0);
+                                                                                                          }
+                                                                                                          function addText(){
+                                                                                                           if(!txt.value)return;
+                                                                                                            remember();
+                                                                                                             ctx.font=fontSize.value+"px "+font.value;
+                                                                                                              ctx.fillStyle=fontColor.value;
+                                                                                                               ctx.fillText(txt.value,40,100);
+                                                                                                               }
+                                                                                                               function addSticker(){
+                                                                                                                let f=stickerFile.files[0];if(!f)return;
+                                                                                                                 let img=new Image();
+                                                                                                                  img.onload=()=>{
+                                                                                                                    remember();
+                                                                                                                      ctx.drawImage(img,canvas.width/2-100,canvas.height/2-100,200,200);
+                                                                                                                       };
+                                                                                                                        img.src=URL.createObjectURL(f);
+                                                                                                                        }
+                                                                                                                        function addFrame(color){
+                                                                                                                         remember();
+                                                                                                                          ctx.strokeStyle=color;ctx.lineWidth=35;
+                                                                                                                           ctx.strokeRect(0,0,canvas.width,canvas.height);
+                                                                                                                           }
+                                                                                                                           function removeColorNow(){
+                                                                                                                            remember();
+                                                                                                                             let rgb=removeColor.value.match(/[a-f0-9]{2}/gi).map(x=>parseInt(x,16));
+                                                                                                                              let d=ctx.getImageData(0,0,canvas.width,canvas.height);
+                                                                                                                               for(let i=0;i<d.data.length;i+=4){
+                                                                                                                                 let dist=Math.hypot(d.data[i]-rgb[0],d.data[i+1]-rgb[1],d.data[i+2]-rgb[2]);
+                                                                                                                                   if(dist<65)d.data[i+3]=0;
+                                                                                                                                    }
+                                                                                                                                     ctx.putImageData(d,0,0);
+                                                                                                                                     }
+                                                                                                                                     canvas.addEventListener("pointerdown",e=>{
+                                                                                                                                      if(!eraser)return;
+                                                                                                                                       drawing=true;canvas.setPointerCapture(e.pointerId);eraseAt(e);
+                                                                                                                                       });
+                                                                                                                                       canvas.addEventListener("pointermove",e=>{
+                                                                                                                                        if(drawing&&eraser)eraseAt(e);
+                                                                                                                                        });
+                                                                                                                                        canvas.addEventListener("pointerup",()=>{
+                                                                                                                                         if(drawing){drawing=false;remember();}
+                                                                                                                                         });
+                                                                                                                                         function eraseAt(e){
+                                                                                                                                          let r=canvas.getBoundingClientRect();
+                                                                                                                                           let x=(e.clientX-r.left)*canvas.width/r.width;
+                                                                                                                                            let y=(e.clientY-r.top)*canvas.height/r.height;
+                                                                                                                                             ctx.save();ctx.globalCompositeOperation="destination-out";
+                                                                                                                                              ctx.beginPath();ctx.arc(x,y,+brush.value,0,Math.PI*2);ctx.fill();ctx.restore();
+                                                                                                                                              }
+
+                                                                                                                                              document.getElementById("videoFile").onchange=e=>{
+                                                                                                                                               if(e.target.files[0])player.src=URL.createObjectURL(e.target.files[0]);
+                                                                                                                                               };
+                                                                                                                                               document.getElementById("audioFile").onchange=e=>{
+                                                                                                                                                if(e.target.files[0])audioPlayer.src=URL.createObjectURL(e.target.files[0]);
+                                                                                                                                                };
+                                                                                                                                                function applyVideoSettings(){
+                                                                                                                                                 player.volume=+volume.value;
+                                                                                                                                                  player.playbackRate=+speed.value;
+                                                                                                                                                  }
+                                                                                                                                                  function capturePoster(){
+                                                                                                                                                   if(!player.videoWidth){alert("Pehle video load karein");return;}
+                                                                                                                                                    let c=document.createElement("canvas");
+                                                                                                                                                     c.width=player.videoWidth;c.height=player.videoHeight;
+                                                                                                                                                      c.getContext("2d").drawImage(player,0,0);
+                                                                                                                                                       let a=document.createElement("a");
+                                                                                                                                                        a.download="SRW-Poster.png";a.href=c.toDataURL();a.click();
+                                                                                                                                                        }
+                                                                                                                                                        async function startRecording(){
+                                                                                                                                                         try{
+                                                                                                                                                           let stream=await navigator.mediaDevices.getUserMedia({audio:true});
+                                                                                                                                                             chunks=[];recorder=new MediaRecorder(stream);
+                                                                                                                                                               recorder.ondataavailable=e=>chunks.push(e.data);
+                                                                                                                                                                 recorder.onstop=()=>{
+                                                                                                                                                                    voicePlayback.src=URL.createObjectURL(new Blob(chunks,{type:"audio/webm"}));
+                                                                                                                                                                       stream.getTracks().forEach(t=>t.stop());
+                                                                                                                                                                         };
+                                                                                                                                                                           recorder.start();alert("Recording Started");
+                                                                                                                                                                            }catch(e){alert("Microphone permission aur HTTPS zaroori hai");}
+                                                                                                                                                                            }
+                                                                                                                                                                            function stopRecording(){
+                                                                                                                                                                             if(recorder&&recorder.state==="recording")recorder.stop();
+                                                                                                                                                                             }
+                                                                                                                                                                             </script>
+                                                                                                                                                                             </body>
+                                                                                                                                                                             </html>
